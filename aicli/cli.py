@@ -8,7 +8,8 @@ from aicli.agent import agent
 def cli(query):
     """AI CLI assistant"""
     query_str = " ".join(query)
-    result = agent.run(query_str, display=True, verbose=True)
+    # result = agent.run(query_str, display=True, verbose=True)
+    result = agent.user_input(query_str)
     click.echo(result)
 
 
