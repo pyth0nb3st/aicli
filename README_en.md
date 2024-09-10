@@ -13,22 +13,25 @@ pip install aicli-gent
 ### Install with Source
 
 1. Clone this repository:
-   ```sh
-   git clone https://github.com/callmexss/aicli.git
-   cd aicli
-   ```
+
+```sh
+git clone https://github.com/callmexss/aicli.git
+cd aicli
+```
 
 2. Install dependencies:
-   ```sh
-   pip install -e .
-   ```
+
+```sh
+pip install -e .
+```
 
 3. Set environment variables:
-   Copy the `.env.example` file to `.env` and fill in the necessary environment variables:
-   ```sh
-   cp .env.example .env
-   ```
-   Then edit the `.env` file and fill in your API key and other settings.
+
+Copy the `.env.example` file to `.env` and fill in the necessary environment variables:
+```sh
+cp .env.example .env
+```
+Then edit the `.env` file and fill in your API key and other settings.
 
 ## Usage
 
