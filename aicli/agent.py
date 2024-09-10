@@ -1,4 +1,6 @@
+import os
 import subprocess
+from pathlib import Path
 
 from GeneralAgent import Agent
 
@@ -49,6 +51,7 @@ Do not use `#show code` unless user asks you to show the code. Always use `#run 
 
 agent = Agent(
     role=role,
+    workspace=Path(os.getcwd()) / ".workspace",
     functions=[run_command],
     api_key=settings.api_key,
     base_url=settings.base_url,
