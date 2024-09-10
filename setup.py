@@ -15,6 +15,7 @@ setup(
         "Click",
         "pydantic-settings",
         "generalagent",
+        "rich",
         # 添加其他依赖项
     ],
     entry_points={
