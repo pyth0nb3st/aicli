@@ -46,6 +46,8 @@ Do not use `#show code` unless user asks you to show the code. Always use `#run 
 3. Run the code with `#run code` trigger
 4. Show the result
 5. Repeat or end
+
+Always use `#run code` to run the code and do the tasks for user.
 """  # noqa: E501
 
 

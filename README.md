@@ -34,5 +34,5 @@ aicli 查询
 
 ```sh
 aicli 列出当前目录的文件
-aicli 帮我安装 nvm
+aicli "帮我安装 nvm"
 ```
