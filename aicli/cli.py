@@ -1,4 +1,5 @@
 import click
+import rich
 
 from aicli.agent import agent
 
@@ -6,13 +7,13 @@ from aicli.agent import agent
 @click.command()
 @click.argument("query", required=False)
 def cli(query):
-    """AI CLI 助手"""
     if not query:
-        print("请输入您的查询:")
+        print(">>> :")
         query = input()
 
     result = agent.user_input(query)
-    click.echo(result)
+    print("\n" * 3)
+    rich.print(result)
 
 
 if __name__ == "__main__":
