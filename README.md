@@ -1,8 +1,18 @@
+[English Version](README_en.md)
+
 # AICLI
 
 一个基于AI的命令行助手工具。
 
 ## 安装
+
+### PYPI 安装
+
+```sh
+pip install aicli-gent
+```
+
+### 源码安装
 
 1. 克隆此仓库:
    ```sh
