@@ -9,7 +9,15 @@ from aicli.role import SYSTEM_PROMPT
 
 
 def run_command(command: str):
-    # run command use subprocess and return the output
+    """
+    Execute the given command line instruction.
+
+    Args:
+        command (str): The command line instruction to be executed.
+
+    Returns:
+        str: The standard output result of the command execution.
+    """
     result = subprocess.run(command, shell=True, capture_output=True, text=True)
     return result.stdout
 
