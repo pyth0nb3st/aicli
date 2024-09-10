@@ -13,7 +13,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "acli=aicli:cli",
+            "aicli=aicli:cli",
         ],
     },
 )

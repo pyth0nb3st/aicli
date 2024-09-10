@@ -4,12 +4,14 @@ from aicli.agent import agent
 
 
 @click.command()
-@click.argument("query", nargs=-1)
+@click.argument("query", required=False)
 def cli(query):
-    """AI CLI assistant"""
-    query_str = " ".join(query)
-    # result = agent.run(query_str, display=True, verbose=True)
-    result = agent.user_input(query_str)
+    """AI CLI 助手"""
+    if not query:
+        print("请输入您的查询:")
+        query = input()
+
+    result = agent.user_input(query)
     click.echo(result)
 
 
