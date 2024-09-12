@@ -11,7 +11,7 @@ An AI-based command-line assistant tool.
 ### Install with PYPI
 
 ```sh
-pip install aicli-gent
+pip install aicli-agent
 ```
 
 ### Install with Source

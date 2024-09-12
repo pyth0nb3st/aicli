@@ -13,7 +13,7 @@
 ### PYPI 安装
 
 ```sh
-pip install aicli-gent
+pip install aicli-agent
 ```
 
 ### 源码安装
