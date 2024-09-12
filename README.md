@@ -4,6 +4,10 @@
 
 一个基于AI的命令行助手工具。
 
+## 生动的例子
+
+![](./images/python-automate-aicli-ex1-zh.gif)
+
 ## 安装
 
 ### PYPI 安装

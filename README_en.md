@@ -2,6 +2,10 @@
 
 An AI-based command-line assistant tool.
 
+## Live Demos
+
+![](./images/python-automate-aicli-ex1.gif)
+
 ## Installation
 
 ### Install with PYPI
