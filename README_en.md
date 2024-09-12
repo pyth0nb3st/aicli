@@ -47,3 +47,7 @@ For example:
 aicli list files in current directory
 aicli "help me install nvm"
 ```
+
+## Acknowledgement
+
+This project is created based on GeneralAgent.

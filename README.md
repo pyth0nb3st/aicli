@@ -49,3 +49,7 @@ aicli 查询
 aicli 列出当前目录的文件
 aicli "帮我安装 nvm"
 ```
+
+## 致谢
+
+本项目基于 [GeneralAgent](https://github.com/CosmosShadow/GeneralAgent) 构建。
