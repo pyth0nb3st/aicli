@@ -1,4 +1,3 @@
-import os
 import subprocess
 from pathlib import Path
 
@@ -6,6 +5,9 @@ from GeneralAgent import Agent
 
 from aicli.conf import settings
 from aicli.role import SYSTEM_PROMPT
+
+HOME = Path.home().expanduser()
+WORKSPACE_ROOT = HOME / ".workspaces"
 
 
 def run_command(command: str):
@@ -24,7 +26,7 @@ def run_command(command: str):
 
 agent = Agent(
     role=SYSTEM_PROMPT,
-    workspace=Path(os.getcwd()) / ".workspace",
+    workspace=WORKSPACE_ROOT / ".workspace",
     functions=[run_command],
     api_key=settings.api_key,
     base_url=settings.base_url,
