@@ -58,4 +58,5 @@ The file contains word "hello world".
 Extra hints, if run command not work, you can write pure python code to finish use tasks
 
 Be smart and helpful with user requests.
+You are in a linux server, so when using matplotlib, set with backend.
 """  # noqa: E501

@@ -1,5 +1,11 @@
+import os
 import subprocess
-from typing import Sequence, Literal
+from typing import Literal
+
+import requests
+from bs4 import BeautifulSoup
+
+from aicli.agentlib import get_general_agent
 
 
 def run_command(command: str):
@@ -81,7 +87,6 @@ def web_search(
     Raises:
         Exception: If there's an error in the API call or if the API key is not set correctly.
     """
-    import os
     from tavily import TavilyClient
     client = TavilyClient(os.getenv("TAVILY_API_KEY"))
     response = client.search(
@@ -95,3 +100,18 @@ def web_search(
         include_raw_content=include_raw_content,
     )
     return response
+
+
+def translate(content: str, target_lang: str):
+    """Translate content to target language."""
+    agent = get_general_agent(model=os.getenv("MODEL"))
+    return agent.run(f'translate <CONTENT>{content}</CONTENT> to {target_lang}')
+
+
+def read_link(url: str) -> str:
+    """Read url content as str."""
+    res = requests.get(url)
+    if res.status_code == 200:
+        soup = BeautifulSoup(res.text)
+        return soup.text
+    return "read link failed."

@@ -1,75 +1,12 @@
-import os
 import time
-from functools import partial
 
 import click
 import rich
 from GeneralAgent import Agent
 
 from aicli.conf import settings
-from aicli.role import SYSTEM_PROMPT
-from aicli.tools import run_command, install_package, web_search
-
-
-def output_callback(token: str, filename: str, sep: str, print_token: bool):
-    token = token or sep
-    with open(filename, "a") as f:
-        f.write(token)
-    if print_token:
-        print(token, end="", flush=True)
-
-
-def output_callback_factory(filename: str, sep="\n=======\n", print_token=True):
-    return partial(output_callback, filename=filename, sep=sep, print_token=print_token)
-
-
-def get_general_agent(
-    token="",
-    base_url="",
-    role="",
-    token_limit=16000,
-    model="gpt-4o-mini",
-    functions=[],
-    output_callback_filename="",
-    workspace=None,
-):
-    kwargs = {
-        "model": model,
-        "token_limit": token_limit,
-        "api_key": token or os.getenv("API_KEY"),
-        "base_url": base_url or os.getenv("BASE_URL"),
-    }
-
-    if role:
-        kwargs["role"] = role
-
-    if output_callback_filename:
-        kwargs["output_callback"] = output_callback_factory(
-            output_callback_filename
-        )
-
-    if functions:
-        kwargs["functions"] = functions
-
-    if workspace:
-        kwargs["workspace"] = workspace
-
-    return Agent(**kwargs)
-
-
-def setup_agent(token_limit=16000, model="gpt-4o-mini", no_context=False):
-    """Create and return a general agent with the given token."""
-    settings.output_callback_path.parent.mkdir(exist_ok=True, parents=True)
-    workspace = None if no_context else settings.workspace_path.as_posix()
-    return get_general_agent(
-        model=model,
-        token_limit=token_limit,
-        role=SYSTEM_PROMPT,
-        functions=[run_command, install_package, web_search],
-        output_callback_filename=settings.output_callback_path.as_posix(),
-        workspace=workspace,
-    )
-
+from aicli.agentlib import get_general_agent, setup_agent
+from aicli.tools import install_package, run_command, web_search, translate, read_link
 
 @click.command()
 @click.argument("query", required=False)
@@ -84,18 +21,24 @@ def setup_agent(token_limit=16000, model="gpt-4o-mini", no_context=False):
     help="Single question mode without multi-turn context",
 )
 @click.option(
+    "-ad",
+    "--advanced",
+    is_flag=True,
+    help="Run advanced mode",
+)
+@click.option(
     "-sp",
     "--show-path",
     is_flag=True,
     help="Print all the folders for the current workspace",
 )
-def cli(query, model, token_limit, archive, archive_output, no_context, show_path):
+def cli(query, model, token_limit, archive, archive_output, no_context, show_path, advanced):
     """CLI command to handle user query and interact with the agent."""
     if show_path:
         if settings.output_callback_path.exists():
             click.echo(f"Chat history path: {settings.output_callback_path}")
         if settings.workspace_path.exists():
-            click.echo(f"Workspace path: {settings.output_callback_path}")
+            click.echo(f"Workspace path: {settings.workspace_path}")
         archive_path = settings.workspace_path.parent / "archive/"
         if archive_path.exists():
             for file in archive_path.iterdir():
@@ -138,9 +81,23 @@ def cli(query, model, token_limit, archive, archive_output, no_context, show_pat
         print(">>> :")
         query = input()
 
+    functions = [run_command, install_package, web_search, translate, read_link]
     agent: Agent = setup_agent(
-        token_limit=token_limit, model=model, no_context=no_context
+        token_limit=token_limit, model=model, no_context=no_context, functions=functions
     )
+    plan_agent: Agent = get_general_agent(model=model, token_limit=token_limit, role="你是一个任务规划专家，会把一个复杂的任务拆分成若干个小的步骤。")
+
+    if advanced:
+        tasks = plan_agent.run(
+            f'Based on user query: <QUERY>{query}</QUERY>, generate a list of plan so you can use your tool or write python code to solve user problem',
+            "return a list[str] of 1-10 steps that can be execute by write python code to finish user requirement.",
+            display=True,
+        )
+        breakpoint()
+        rich.print(tasks)
+        for task in tasks:
+            _ = agent.run(task, {"succeed": bool, "result": str})
+        return
 
     result = agent.user_input(query)
 
