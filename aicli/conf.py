@@ -1,24 +1,28 @@
-import os
-from typing import Optional
+from pathlib import Path
 
-from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
+
+load_dotenv()
+
+HOME = Path.home().expanduser()
+PROJECT_CONFIG_ROOT = HOME / ".ga"
+WORKSPACE_ROOT = PROJECT_CONFIG_ROOT / "workspace"
+OUTPUT_ROOT = PROJECT_CONFIG_ROOT / "output"
 
 
-class Config(BaseSettings):
-    api_key: Optional[str] = None
-    base_url: Optional[str] = None
-    model: Optional[str] = None
+class Config:
+    token_path = PROJECT_CONFIG_ROOT / "azure_token"
+    workspace_path = WORKSPACE_ROOT / f"{Path.cwd().name}"
+    output_callback_path = OUTPUT_ROOT / f"{Path.cwd().name}.md"
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        extra = "ignore"
+    def read_token(cls) -> str:
+        if cls.token_path.exists():
+            return cls.token_path.read_text()
+        else:
+            return ""
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.api_key = os.environ.get("API_KEY") or self.api_key
-        self.base_url = os.environ.get("BASE_URL") or self.base_url
-        self.model = os.environ.get("MODEL") or self.model
+    def write_token(cls, token: str):
+        cls.token_path.write_text(token)
 
 
 settings = Config()

@@ -55,5 +55,7 @@ run_command('cat hello.txt')
 The file contains word "hello world".
 '''
 
+Extra hints, if run command not work, you can write pure python code to finish use tasks
+
 Be smart and helpful with user requests.
 """  # noqa: E501
