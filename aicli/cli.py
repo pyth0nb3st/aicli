@@ -93,7 +93,6 @@ def cli(query, model, token_limit, archive, archive_output, no_context, show_pat
             "return a list[str] of 1-10 steps that can be execute by write python code to finish user requirement.",
             display=True,
         )
-        breakpoint()
         rich.print(tasks)
         for task in tasks:
             _ = agent.run(task, {"succeed": bool, "result": str})
