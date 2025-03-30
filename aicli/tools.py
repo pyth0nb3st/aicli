@@ -1,4 +1,5 @@
 import subprocess
+from typing import Sequence, Literal
 
 
 def run_command(command: str):
@@ -32,14 +33,14 @@ def install_package(package_name: str):
 
 def web_search(
     query: str,
-    topic="general",
-    search_depth="basic",
-    max_results=5,
-    time_range="day",
-    include_answer=None,
-    include_images=False,
-    include_raw_content=False,
-):
+    search_depth: Literal["basic", "advanced"] = "basic",
+    topic: Literal["general", "news"] = "general",
+    days: int = 3,
+    max_results: int = 5,
+    include_answer: bool = False,
+    include_raw_content: bool = False,
+    include_images: bool = False,
+) -> dict:
     """
     Perform a web search using the Tavily API.
 
@@ -48,11 +49,11 @@ def web_search(
 
     Args:
         query (str): The search query to be used for the web search.
-        topic (str, optional): The topic of the search. Defaults to "general", can also be "news", "finance".
+        topic (str, optional): The topic of the search. Defaults to "general", can also be "news".
         search_depth (str, optional): The depth of the search. Can be "basic" or "advanced". Defaults to "basic".
         max_results (int, optional): The maximum number of search results to return. Defaults to 5.
-        time_range (str, optional): The time range for the search results. Can be None, "day", "week", "month", "year". Defaults to "day".
-        include_answer (str, optiona): Include answer from llm. Can be None, "basic" for short answer, "advanced" for more detail answer"
+        days (int): the latest days to search.
+        include_answer (bool): Include answer from llm.
         include_images (bool): Include image urls in search results.
         include_raw_content (bool): Include raw content in search results.
 
@@ -88,7 +89,7 @@ def web_search(
         topic=topic,
         search_depth=search_depth,
         max_results=max_results,
-        time_range=time_range,
+        days=days,
         include_answer=include_answer,
         include_images=include_images,
         include_raw_content=include_raw_content,
