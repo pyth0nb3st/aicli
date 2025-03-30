@@ -8,7 +8,7 @@ from GeneralAgent import Agent
 
 from aicli.conf import settings
 from aicli.role import SYSTEM_PROMPT
-from aicli.tools import run_command, install_package
+from aicli.tools import run_command, install_package, web_search
 
 
 def output_callback(token: str, filename: str, sep: str, print_token: bool):
@@ -65,7 +65,7 @@ def setup_agent(token_limit=16000, model="gpt-4o-mini", no_context=False):
         model=model,
         token_limit=token_limit,
         role=SYSTEM_PROMPT,
-        functions=[run_command, install_package],
+        functions=[run_command, install_package, web_search],
         output_callback_filename=settings.output_callback_path.as_posix(),
         workspace=workspace,
     )

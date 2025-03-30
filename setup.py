@@ -16,6 +16,7 @@ setup(
         "pydantic-settings",
         "generalagent",
         "rich",
+        "tavily-python",
         # 添加其他依赖项
     ],
     entry_points={
