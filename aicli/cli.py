@@ -37,7 +37,7 @@ def get_general_agent(
         "model": model,
         "token_limit": token_limit,
         "api_key": token or os.getenv("API_KEY"),
-        "base_url": token or os.getenv("BASE_URL"),
+        "base_url": base_url or os.getenv("BASE_URL"),
     }
 
     if role:
