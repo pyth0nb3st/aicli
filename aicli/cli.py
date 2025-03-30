@@ -83,8 +83,26 @@ def setup_agent(token_limit=16000, model="gpt-4o-mini", no_context=False):
     is_flag=True,
     help="Single question mode without multi-turn context",
 )
-def cli(query, model, token_limit, archive, archive_output, no_context):
+@click.option(
+    "-sp",
+    "--show-path",
+    is_flag=True,
+    help="Print all the folders for the current workspace",
+)
+def cli(query, model, token_limit, archive, archive_output, no_context, show_path):
     """CLI command to handle user query and interact with the agent."""
+    if show_path:
+        if settings.output_callback_path.exists():
+            click.echo(f"Chat history path: {settings.output_callback_path}")
+        if settings.workspace_path.exists():
+            click.echo(f"Workspace path: {settings.output_callback_path}")
+        archive_path = settings.workspace_path.parent / "archive/"
+        if archive_path.exists():
+            for file in archive_path.iterdir():
+                if settings.workspace_path.name in file.as_posix():
+                    click.echo(f"Archived path: {file}")
+        return
+
     if archive:
         try:
             name = settings.workspace_path.name
@@ -98,7 +116,6 @@ def cli(query, model, token_limit, archive, archive_output, no_context):
         except Exception as err:
             click.echo(f"error occurred: {err}")
 
-        return
 
     if archive_output:
         try:
@@ -114,6 +131,7 @@ def cli(query, model, token_limit, archive, archive_output, no_context):
         except Exception as err:
             click.echo(f"error occurred: {err}")
 
+    if archive or archive_output:
         return
 
     if not query:
