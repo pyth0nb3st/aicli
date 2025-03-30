@@ -35,7 +35,10 @@ def web_search(
     topic="general",
     search_depth="basic",
     max_results=5,
-    time_range="day"
+    time_range="day",
+    include_answer=None,
+    include_images=False,
+    include_raw_content=False,
 ):
     """
     Perform a web search using the Tavily API.
@@ -49,6 +52,9 @@ def web_search(
         search_depth (str, optional): The depth of the search. Can be "basic" or "advanced". Defaults to "basic".
         max_results (int, optional): The maximum number of search results to return. Defaults to 5.
         time_range (str, optional): The time range for the search results. Can be None, "day", "week", "month", "year". Defaults to "day".
+        include_answer (str, optiona): Include answer from llm. Can be None, "basic" for short answer, "advanced" for more detail answer"
+        include_images (bool): Include image urls in search results.
+        include_raw_content (bool): Include raw content in search results.
 
     Returns:
         dict: The response from the Tavily API containing the search results.
@@ -82,6 +88,9 @@ def web_search(
         topic=topic,
         search_depth=search_depth,
         max_results=max_results,
-        time_range=time_range
+        time_range=time_range,
+        include_answer=include_answer,
+        include_images=include_images,
+        include_raw_content=include_raw_content,
     )
     return response
