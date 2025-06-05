@@ -7,7 +7,6 @@ from GeneralAgent import Agent
 from aicli.conf import settings
 from aicli.role import SYSTEM_PROMPT
 
-
 HOME = Path.home().expanduser()
 WORKSPACE_ROOT = HOME / ".workspaces"
 
@@ -45,9 +44,7 @@ def get_general_agent(
         kwargs["role"] = role
 
     if output_callback_filename:
-        kwargs["output_callback"] = output_callback_factory(
-            output_callback_filename
-        )
+        kwargs["output_callback"] = output_callback_factory(output_callback_filename)
 
     if functions:
         kwargs["functions"] = functions
@@ -58,8 +55,27 @@ def get_general_agent(
     return Agent(**kwargs)
 
 
-def setup_agent(token_limit=16000, model="gpt-4o-mini", no_context=False, functions=None):
-    """Create and return a general agent with the given token."""
+def setup_agent(
+    token_limit=16000, model="gpt-4o-mini", no_context=False, functions=None
+):
+    """Return a GeneralAgent instance configured with local settings.
+
+    Parameters
+    ----------
+    token_limit : int, optional
+        Maximum number of tokens that the agent can keep in context.
+    model : str, optional
+        Name of the model to use when interacting with the API.
+    no_context : bool, optional
+        When ``True`` the agent does not use a workspace for context.
+    functions : list, optional
+        Additional functions that can be called by the agent.
+
+    Notes
+    -----
+    The API token and base URL are read from the ``API_KEY`` and
+    ``BASE_URL`` environment variables.
+    """
     settings.output_callback_path.parent.mkdir(exist_ok=True, parents=True)
     workspace = None if no_context else settings.workspace_path.as_posix()
     return get_general_agent(
